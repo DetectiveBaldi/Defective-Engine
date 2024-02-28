@@ -42,7 +42,7 @@ class InitState extends FlxState
         #if DISCORD_ALLOWED
             Presence.initialize("1198052399298924584");
             
-            FlxG.stage.application.window.onClose.add(():Void -> Presence.close());
+            FlxG.stage.application.window.onClose.add(() -> Presence.close());
         #end
 
         FlxG.switchState(nextState);
