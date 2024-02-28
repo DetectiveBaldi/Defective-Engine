@@ -25,7 +25,9 @@ Currently, Defective Engine is able to compile to HL, HTML5, Neko, and Windows.
 - hxvlc
 - SScript
 
-Defective Engine uses the **latest versions** of each library. Using outdated versions may cause unexpected behaviour.
+The following libraries should be installed through git:
+- haxeui-core
+- haxeui-flixel
 
 Haxe 4.3.3 is also required.
 
