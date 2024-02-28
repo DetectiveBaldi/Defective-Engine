@@ -58,11 +58,15 @@ class Presence
         Discord.Shutdown();
     }
 
-    public static function recalculate(details:String):Void
+    public static function recalculate(details:String, ?largeImageKey:String = "defective", ?smallImageKey:String):Void
     {
         var presence:DiscordRichPresence = DiscordRichPresence.create();
 
         presence.details = details;
+
+        presence.largeImageKey = largeImageKey;
+
+        presence.smallImageKey = smallImageKey;
         
         Discord.UpdatePresence(RawConstPointer.addressOf(presence));
     }
