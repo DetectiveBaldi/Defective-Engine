@@ -167,68 +167,74 @@ class ChartingState extends State
 
         tabs.addComponent(tab);
 
-        #if !html5
-            var export:Button = new Button();
+        var export:Button;
 
-            var spacer:Spacer = new Spacer();
+        var spacer:Spacer;
 
-            var autoSaving:CheckBox = new CheckBox();
+        var autoSaving:CheckBox;
 
-            var saveInterval:TextField = new TextField();
+        var saveInterval:TextField;
 
-            export.text = "Export";
+        export = new Button();
 
-            export.onClick = function(i:MouseEvent):Void
+        export.text = "Export";
+
+        export.onClick = function(i:MouseEvent):Void
+        {
+            var song:{name:String, sections:Array<Section>} =
             {
-                var song:{name:String, sections:Array<Section>} =
-                {
-                    name: "Test",
+                name: "Test",
 
-                    sections: new Array<Section>()
-                };
+                sections: new Array<Section>()
+            };
 
-                var file:FileReference = new FileReference();
+            var file:FileReference = new FileReference();
 
-                file.addEventListener(Event.COMPLETE, function(o:Event):Void
-                {
-                    file = null;
-                });
-
-                file.addEventListener(Event.CANCEL, function(o:Event):Void
-                {
-                    file = null;
-                });
-
-                file.addEventListener(IOErrorEvent.IO_ERROR, function(u:Event):Void
-                {
-                    file = null;
-                });
-
-                file.save(Json.stringify(song), Path.join([Sys.getCwd() + "file.json"]));
-            }
-
-            tab.addComponent(export);
-
-            spacer.height = 15;
-
-            tab.addComponent(spacer);
-
-            autoSaving.text = "Allow AutoSaves?";
-
-            autoSaving.onChange = function(i:UIEvent):Void
+            file.addEventListener(Event.COMPLETE, function(o:Event):Void
             {
-                saveInterval.disabled = !autoSaving.selected;
-            }
+                file = null;
+            });
 
-            tab.addComponent(autoSaving);
+            file.addEventListener(Event.CANCEL, function(o:Event):Void
+            {
+                file = null;
+            });
 
-            saveInterval.disabled = true;
+            file.addEventListener(IOErrorEvent.IO_ERROR, function(u:Event):Void
+            {
+                file = null;
+            });
 
-            saveInterval.restrictChars = "0-9.";
+            file.save(Json.stringify(song), "file.json");
+        }
 
-            saveInterval.placeholder = "Save Interval";
+        tab.addComponent(export);
 
-            tab.addComponent(saveInterval);
-        #end
+        spacer = new Spacer();
+
+        spacer.height = 15;
+
+        tab.addComponent(spacer);
+
+        autoSaving = new CheckBox();
+
+        autoSaving.text = "Allow AutoSaves?";
+
+        autoSaving.onChange = function(i:UIEvent):Void
+        {
+            saveInterval.disabled = !autoSaving.selected;
+        }
+
+        tab.addComponent(autoSaving);
+
+        saveInterval = new TextField();
+
+        saveInterval.disabled = true;
+
+        saveInterval.restrictChars = "0-9.";
+
+        saveInterval.placeholder = "Save Interval";
+
+        tab.addComponent(saveInterval);
     }
 }
