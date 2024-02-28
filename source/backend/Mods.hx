@@ -44,7 +44,7 @@ class Mods
     public static function exists(name:String):Bool
     {
         for (pack in list)
-            if (pack.name == name);
+            if (pack.name == name)
                 return true;
         
         return false;

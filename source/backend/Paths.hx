@@ -40,8 +40,6 @@ class Paths
 
         graphic.persist = true;
 
-        graphic.destroyOnNoUse = false;
-
         graphics.set(key, graphic);
 
         return graphic;

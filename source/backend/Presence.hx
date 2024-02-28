@@ -35,7 +35,7 @@ class Presence
 
         Discord.Initialize(applicationID, RawPointer.addressOf(handlers), 1, null);
 
-        Thread.create(function():Void
+        Thread.create(():Void ->
         {
             while (true)
             {
