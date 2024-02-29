@@ -58,8 +58,7 @@
 	<haxelib name="haxeui-core" />
 
 	<haxelib name="haxeui-flixel" />
-
-	<!-- Fixes an issue with HaxeUI TextFields -->
+	
 	<haxelib name="flixel-text-input" />
 
 	<!--In case you want to use nape with flixel-->

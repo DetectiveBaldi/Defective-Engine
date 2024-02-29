@@ -13,14 +13,12 @@ Defective Engine is still in very early development, almost nothing concrete has
 ## Compiling
 Currently, Defective Engine is able to compile to HL, HTML5, Neko, and Windows.
 
-### Required libraries:
-- flixel
+When compiling, use the latest Haxe!
+
+### Required Libraries:
+- flixel, openfl, lime
 - flixel-addons
-- openfl
-- lime
-- haxeui-core
-- haxeui-flixel
-- flixel-input-text
+- flixel-text-input
 - hxdiscord_rpc
 - hxvlc
 - SScript
@@ -28,8 +26,6 @@ Currently, Defective Engine is able to compile to HL, HTML5, Neko, and Windows.
 The following libraries should be installed through git:
 - haxeui-core
 - haxeui-flixel
-
-Haxe 4.3.3 is also required.
 
 ## Contributing
 Issues and Pull Requests are always welcome.

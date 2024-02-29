@@ -2,16 +2,16 @@ package states.editors;
 
 import haxe.Json;
 
-import haxe.io.Path;
-
 import haxe.ui.components.Button;
 import haxe.ui.components.CheckBox;
 import haxe.ui.components.Spacer;
 import haxe.ui.components.TextField;
 
-import haxe.ui.containers.ContinuousHBox;
+import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
 import haxe.ui.containers.TabView;
+
+import haxe.ui.core.Component;
 
 import haxe.ui.events.MouseEvent;
 import haxe.ui.events.UIEvent;
@@ -48,7 +48,7 @@ class ChartingState extends State
 
     var line:FlxSprite;
 
-    var tabs:TabView;
+    var tabs:Map<String, Component>;
 
     public function new(nextState:NextState):Void
     {
@@ -80,9 +80,13 @@ class ChartingState extends State
 
         FlxG.camera.follow(line);
 
+        tabs = new Map<String, Component>();
+
         prepareUI();
 
         addAssetsTab();
+
+        addAudioTab();
 
         addSongTab();
 
@@ -108,78 +112,116 @@ class ChartingState extends State
 
     function prepareUI():Void
     {
-        tabs = new TabView();
-        tabs.styleNames = "full-width-buttons";
-        tabs.width = 300;
-        tabs.height = 400;
-        tabs.setPosition((FlxG.width - tabs.width) - 25, 25);
-        add(tabs);
+        var main:TabView = new TabView();
+        main.styleNames = "full-width-buttons";
+        main.width = 300;
+        main.height = 400;
+        main.setPosition((FlxG.width - main.width) - 25, 25);
+        tabs.set("main", main);
+        add(main);
     }
 
     function addAssetsTab():Void
     {
-        var tab:VBox = new VBox();
+        var box_0:VBox = new VBox();
 
-        tab.text = "Assets";
+        box_0.text = "Assets";
 
-        tabs.addComponent(tab);
+        tabs.set("assets", box_0);
+
+        tabs.get("main").addComponent(box_0);
+    }
+
+    function addAudioTab():Void
+    {
+        var box_0:VBox = new VBox();
+
+        box_0.text = "Audio";
+
+        tabs.set("audio", box_0);
+
+        tabs.get("main").addComponent(box_0);
+
+        /* .. .. */
+
+        var muteInstrumental:CheckBox = new CheckBox();
+
+        muteInstrumental.id = "muteInstrumental";
+
+        var muteVocals:CheckBox = new CheckBox();
+
+        muteVocals.id = "muteVocals";
+
+        /* .. .. */
+
+        muteInstrumental.text = "Mute Instrumental";
+
+        box_0.addComponent(muteInstrumental);
+
+        muteVocals.text = "Mute Vocals";
+
+        box_0.addComponent(muteVocals);
     }
 
     function addSongTab():Void
     {
-        var tab:VBox = new VBox();
+        var box_0:VBox = new VBox();
 
-        tab.text = "Song";
+        box_0.text = "Song";
 
-        tabs.addComponent(tab);
+        tabs.set("song", box_0);
 
-        var muteInstrumental:CheckBox = new CheckBox();
-
-        muteInstrumental.text = "Mute Instrumental";
-
-        tab.addComponent(muteInstrumental);
-
-        var muteVocals:CheckBox = new CheckBox();
-
-        muteVocals.text = "Mute Vocals";
-
-        tab.addComponent(muteVocals);
+        tabs.get("main").addComponent(box_0);
     }
 
     function addNoteTab():Void
     {
-        var tab:VBox = new VBox();
+        var box_0:VBox = new VBox();
 
-        tab.text = "Note";
+        box_0.text = "Note";
 
-        tabs.addComponent(tab);
+        tabs.set("note", box_0);
+
+        tabs.get("main").addComponent(box_0);
     }
 
     function addExportTab():Void
     {
-        var tab:VBox = new VBox();
+        var box_0:VBox = new VBox();
 
-        tab.text = "Export";
+        box_0.text = "Export";
 
         #if html5
-            tab.disabled = true;
+            box_0.disabled = true;
         #end
 
-        tabs.addComponent(tab);
+        tabs.set("export", box_0);
 
-        var export:Button;
+        tabs.get("main").addComponent(box_0);
 
-        var spacer:Spacer;
+        /* .. .. */
 
-        var autoSaving:CheckBox;
+        var export:Button = new Button();
 
-        var saveInterval:TextField;
+        export.id = "export";
 
-        export = new Button();
+        var spacer_0:Spacer = new Spacer();
+
+        spacer_0.id = "spacer_0";
+
+        var autoSaving:CheckBox = new CheckBox();
+
+        autoSaving.id = "autoSaving";
+
+        var saveInterval:TextField = new TextField();
+
+        saveInterval.id = "saveInterval";
+
+        /* .. .. */
 
         export.text = "Export";
 
-        export.onClick = function(i:MouseEvent):Void
+        export.onClick = function(e:MouseEvent):Void
         {
             var song:{name:String, sections:Array<Section>} =
             {
@@ -190,44 +232,26 @@ class ChartingState extends State
 
             var file:FileReference = new FileReference();
 
-            file.addEventListener(Event.COMPLETE, function(o:Event):Void
-            {
-                file = null;
-            });
+            file.addEventListener(Event.COMPLETE, (e:Event) -> file = null);
 
-            file.addEventListener(Event.CANCEL, function(o:Event):Void
-            {
-                file = null;
-            });
+            file.addEventListener(Event.CANCEL, (e:Event) -> file = null);
 
-            file.addEventListener(IOErrorEvent.IO_ERROR, function(u:Event):Void
-            {
-                file = null;
-            });
+            file.addEventListener(IOErrorEvent.IO_ERROR, (e:IOErrorEvent) -> file = null);
 
             file.save(Json.stringify(song), "file.json");
         }
 
-        tab.addComponent(export);
+        box_0.addComponent(export);
 
-        spacer = new Spacer();
+        spacer_0.height = 15;
 
-        spacer.height = 15;
+        box_0.addComponent(spacer_0);
 
-        tab.addComponent(spacer);
+        autoSaving.text = "Allow Auto-Saving?";
 
-        autoSaving = new CheckBox();
+        autoSaving.onChange = (e:UIEvent) -> saveInterval.disabled = !autoSaving.selected;
 
-        autoSaving.text = "Allow AutoSaves?";
-
-        autoSaving.onChange = function(i:UIEvent):Void
-        {
-            saveInterval.disabled = !autoSaving.selected;
-        }
-
-        tab.addComponent(autoSaving);
-
-        saveInterval = new TextField();
+        box_0.addComponent(autoSaving);
 
         saveInterval.disabled = true;
 
@@ -235,6 +259,6 @@ class ChartingState extends State
 
         saveInterval.placeholder = "Save Interval";
 
-        tab.addComponent(saveInterval);
+        box_0.addComponent(saveInterval);
     }
 }
